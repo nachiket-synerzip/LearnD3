@@ -3,11 +3,36 @@
 <style type="text/css">
 
 /* CSS goes here. */
+/*
 svg {
 	border: 1px solid black;
 	margin: 10px 30px 10px 30px;
+}*/
+
+.subunit.SCT { fill: #ddc; }
+.subunit.WLS { fill: #cdd; }
+.subunit.NIR { fill: #cdc; }
+.subunit.ENG { fill: #dcd; }
+.subunit.IRL { display: none; }
+
+.subunit-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  stroke-linejoin: round;
 }
 
+.subunit-boundary.IRL {
+  stroke: #aaa;
+}
+
+.subunit-label {
+  fill: #777;
+  fill-opacity: .5;
+  font-size: 20px;
+  font-weight: 300;
+  text-anchor: middle;
+}
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>

@@ -19,5 +19,49 @@ d3.json("data/uk.json", function(error, uk) {
     .translate([width / 2, height / 2]);
   
   path = d3.geo.path().projection(projection);
-  svg.append("path").datum(subunits).attr("d", path);
+  svg.selectAll(".subunit")
+    .data(topojson.feature(uk, uk.objects.subunits).features)
+  .enter().append("path")
+    .attr("class", function(d) { return "subunit " + d.id; })
+    .attr("d", path);
+  //svg.append("path").datum(subunits).attr("d", path);
+  //boundary between countries (without irl)
+  svg.append("path")
+    .datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
+    .attr("d", path)
+    .attr("class", "subunit-boundary");
+  
+  //boundary for irl
+  svg.append("path")
+    .datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
+    .attr("d", path)
+    .attr("class", "subunit-boundary IRL");
+  
+  //draw circles for each of the places
+  svg.append("path")
+    .datum(topojson.feature(uk, uk.objects.places))
+    .attr("d", path)
+    .attr("class", "place");
+  
+  //labels for the places
+  svg.selectAll(".place-label")
+    .data(topojson.feature(uk, uk.objects.places).features)
+  .enter().append("text")
+    .attr("class", "place-label")
+    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+    .attr("dy", ".35em")
+    .text(function(d) { return d.properties.name; });
+  
+  svg.selectAll(".place-label")
+    .attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
+    .style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; });
+    
+  //countyr labels
+  svg.selectAll(".subunit-label")
+    .data(topojson.feature(uk, uk.objects.subunits).features)
+  .enter().append("text")
+    .attr("class", function(d) { return "subunit-label " + d.id; })
+    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+    .attr("dy", ".35em")
+    .text(function(d) { return d.properties.name; });
 });
