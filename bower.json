@@ -1,0 +1,9 @@
+{
+    "name": "Learn D3",
+    "version": "0.1.0",
+    "main": "",
+    "dependencies": {
+        "requirejs": "latest",
+        "openlayers": "./vendor/openlayers"
+    }
+}
