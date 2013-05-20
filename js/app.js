@@ -33,7 +33,8 @@ define(['openlayers', 'd3'], function(OpenLayers, d3) {
 
 		map.setCenter(new OpenLayers.LonLat(-96, 37).transform("EPSG:4326", "EPSG:900913"), 4);
 
-		d3.json("data/us-states.json", function (data) {
+		d3.json("data/ny_buildings_900913.json", function (data) {
+		//d3.json("data/us-states.json", function (data) {	
 			var overlay = new OpenLayers.Layer.Vector("states", {}, {layerId: "customStationsLayer"});
 			// Add the container when the overlay is added to the map.
 			overlay.afterAdd = function () {
@@ -48,8 +49,6 @@ define(['openlayers', 'd3'], function(OpenLayers, d3) {
 				g = svg.append("g");
 				var bounds = d3.geo.bounds(data),
 				path = d3.geo.path().projection(project);
-				console.log(bounds);
-				console.log(data);
 
 				var feature = g.selectAll("path")
 				.data(data.features)
@@ -61,21 +60,19 @@ define(['openlayers', 'd3'], function(OpenLayers, d3) {
 				function reset() {
 					var bottomLeft = project(bounds[0]),
 					topRight = project(bounds[1]);
-					console.log(bottomLeft);
 
 					svg.attr("width", topRight[0] - bottomLeft[0])
 					.attr("height", bottomLeft[1] - topRight[1])
 					.style("margin-left", bottomLeft[0] + "px")
 					.style("margin-top", topRight[1] + "px");
-
+					
 					g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
 
 					feature.attr("d", path);
 				}
 
 				function project(x) {
-					var point = map.getViewPortPxFromLonLat(new OpenLayers.LonLat(x[0], x[1])
-					.transform("EPSG:4326", "EPSG:900913"));
+					var point = map.getViewPortPxFromLonLat(new OpenLayers.LonLat(x[0], x[1]));
 					return [point.x, point.y];
 				}
 			}
