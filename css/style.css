@@ -9,14 +9,14 @@ body {
 }
 
 path {
-	fill: #000;
-	fill-opacity: .2;
-	stroke: #fff;
+	fill: orange;
+	fill-opacity: 0.0;
+	stroke: black;
 	stroke-width: 1.5px;
 }
 
 path:hover {
-	fill: brown;
+	fill: red;
 	fill-opacity: .7;
 }
 
